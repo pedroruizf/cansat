@@ -8,9 +8,9 @@ void setup() {
   println(Serial.list());
   size (400, 335);
   background(0);
-  puerto = new Serial(this, Serial.list()[0], 9600);//establece la variable puerto asignando el receptor APC200 y una velocidad de 9600 baudios
+  puerto = new Serial(this, Serial.list()[32], 57600);//establece la variable puerto asignando el receptor APC200 y una velocidad de 9600 baudios
   fichero=createWriter("datos.csv");//crea el fichero datos.csv
-  datosPantalla("Sin datos", "Sin datos", "Sin datos", "Sin datos");
+  datosPantalla("Sin datos", "Sin datos", "Sin datos", "Sin datos", "Sin datos", "Sin datos" );
 }
 
 void draw() {
@@ -27,20 +27,20 @@ void draw() {
       //println (buffer);
       println ("el nº de campos es:" + numeroCampos + " el nº de caracteres es:" + longitudBuffer);//imprimimos en consola el nº de campos y nº de caracteres recibidos
 
-      if (numeroCampos==6 && listaBuffer[0].equals("soto")==true && listaBuffer[5].equals("fin\r\n")==true) {//grabamos si hay 6 campos y los campos de control de inicio y fin son correctos
+      if (numeroCampos==8 && listaBuffer[0].equals("soto")==true && listaBuffer[7].equals("fin\r\n")==true) {//grabamos si hay 6 campos y los campos de control de inicio y fin son correctos
         contador++;
         fichero.print(buffer);//colocamos en el fichero el buffer
         fichero.flush();//hacemos la grabación efectiva y se cierra el fichero
         println(buffer);//imprimimos por consola lo grabado
-        datosPantalla(listaBuffer[1], listaBuffer[2], listaBuffer[3], listaBuffer[4]);//llamamos a la función que nos pone en pantalla los datos recogidos
+        datosPantalla(listaBuffer[1], listaBuffer[2], listaBuffer[3], listaBuffer[4], listaBuffer[5], listaBuffer[6]);//llamamos a la función que nos pone en pantalla los datos recogidos
       } else {
-        datosPantalla("Sin datos", "Sin datos", "Sin datos", "Sin datos");
+        datosPantalla("Sin datos", "Sin datos", "Sin datos", "Sin datos", "Sin datos", "Sin datos");
       }
     }
   }
 }
 
-void datosPantalla(String tiempo, String temperatura, String presion, String altitud) {
+void datosPantalla(String tiempo, String temperatura, String presion, String altitud, String direccion, String acelz) {
   background(0);
   textSize (24);
   text ("Datos SotoSat", 120, 35);
@@ -49,5 +49,7 @@ void datosPantalla(String tiempo, String temperatura, String presion, String alt
   text ("Temperatura (ºC):"+temperatura, 50, 100);
   text ("Presión (Pa):"+presion, 50, 125);
   text ("Altitud (m):"+altitud, 50, 150);
+  text ("Dirección (0º-360º):"+direccion, 50, 175);
+  text ("Acel z (mg):"+acelz, 50, 200);
   
 }
